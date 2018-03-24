@@ -1,3 +1,3 @@
 export default {
-    url_base: "/api/v1",
+    urlBase: "/api/v1",
 }

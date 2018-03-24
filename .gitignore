@@ -56,5 +56,5 @@ Session.vim
 
 node_modules
 dist
-index.html
+/index.html
 yarn-error.log
