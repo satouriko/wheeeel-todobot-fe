@@ -13,8 +13,9 @@ import './style.css'
 Vue.use(VueRouter);
 
 const routes = [
-    {title: '排行榜', name: 'chart-bar', path: '/', component: Rank},
+    {title: '排行', name: 'chart-bar', path: '/', component: Rank},
     {title: '趋势', name: 'chart-line', path: '/trend', component: Rank},
+    {title: '频率', name: 'chart-pie', path: '/pulse', component: Rank},
     {title: '登录', name: 'user', path: '/login', component: Login},
 ];
 

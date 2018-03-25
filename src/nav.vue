@@ -12,6 +12,7 @@
         <div>
             <div class="bg chart-bar"></div>
             <div class="bg chart-line"></div>
+            <div class="bg chart-pie"></div>
             <div class="bg user"></div>
         </div>
     </div>
@@ -34,16 +35,24 @@
         color: #13b4ff !important;
     }
 
+    .chart-pie:hover {
+        color: #c668c6 !important;
+    }
+
     .user:hover {
         color: #b8ff1e !important;
     }
 
     .bg.chart-bar {
-        background: url("img/bg2.jpg");
+        background: url("img/bg1.jpg");
     }
 
     .bg.chart-line {
         background: url("img/bg4.jpg");
+    }
+
+    .bg.chart-pie {
+        background: url("img/bg2.jpg");
     }
 
     .bg.user {
@@ -85,7 +94,7 @@
         }
         li {
             display: inline-block !important;
-            margin: 0px 30px !important;
+            margin: 0px 20px !important;
         }
     }
 
@@ -106,7 +115,7 @@
     li,li a {
         color: #fff;
         text-decoration: none;
-        font-size: 28px;
+        font-size: 1.5rem;
         margin: 20px 0px;
         display: block;
         -webkit-transition: 0.3s all ease-in-out;
