@@ -1,57 +1,5 @@
 <template>
-    <!-- Main content -->
-    <!--<div class="container">
-        <div class="row">
-            &lt;!&ndash; left column &ndash;&gt;
-            <h2>用户登录</h2>
-            <div class="col-md-12">
-                <div id="msg-success" class="alert alert-success" style="display: none;">
-                    <h4><i class="icon fa fa-info"></i> 登录成功，欢迎回来！</h4>
-                    <p id="msg-success-p">{{ loginMessage }}</p>
-                </div>
-                <div id="msg-warning" class="alert alert-warning" style="display: none;">
-                    <h4><i class="icon fa fa-info"></i> 登录失败！</h4>
-
-                    <p id="msg-warning-p">
-                        {{ warning }}
-                    </p>
-                </div>
-                <div id="msg-error" class="alert alert-danger" style="display: none;">
-                    <h4><i class="icon fa fa-info"></i> 发生错误！</h4>
-
-                    <p id="msg-error-p">
-                        {{ error }}
-                    </p>
-                </div>
-            </div>
-            <div class="col-md-6" v-if="isReady && !isLogin">
-                &lt;!&ndash; general form elements &ndash;&gt;
-                <div class="box box-primary">
-                    <div class="box-body">
-                        <div class="form-horizontal">
-                            <div class="row">
-                                <fieldset class="col-sm-12">
-                                    <div class="form-group" v-if="otp">
-                                        <label for="otp" class="col-sm-3 control-label">验证码</label>
-
-                                        <div class="col-sm-9">
-                                            <p id="otp">{{ otpCode }}</p>
-                                        </div>
-                                    </div>
-                                    <div class="form-group" v-else-if="!warning">
-                                        <p>正在登录...请稍候</p>
-                                    </div>
-                                </fieldset>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                &lt;!&ndash; /.box &ndash;&gt;
-            </div>
-        </div>
-        &lt;!&ndash; /.row &ndash;&gt;
-    </div>-->
-    <div class="login-container">
+    <div class="flex-container">
         <h1>用户登录</h1>
         <div id="msg-success" class="alert alert-success" style="display: none;">
             <h4><i class="icon fa fa-check"></i> 登录成功，欢迎回来</h4>
@@ -88,10 +36,6 @@
 
 <style scoped>
 
-    div {
-        text-align: center;
-    }
-
     h1, span, .login-form p {
         color: #fff;
         font-family: Serif;
@@ -113,22 +57,6 @@
 
     p {
         margin: 10px 0;
-    }
-
-    .login-container {
-        height: 100%;
-        position: relative;
-        display: -ms-flexbox;
-        display: flex;
-        -ms-flex-align: center;
-        align-items: center;
-        -ms-flex-direction: column;
-        flex-direction: column;
-        -ms-flex-wrap: wrap;
-        flex-wrap: wrap;
-        -ms-flex-pack: center;
-        justify-content: center;
-        overflow: hidden;
     }
 
     .alert {

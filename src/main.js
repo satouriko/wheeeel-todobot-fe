@@ -5,7 +5,7 @@ import Cookies from 'js-cookie'
 
 import config from './config'
 
-import Main from './main.vue'
+import Rank from './rank.vue'
 import Login from './login.vue'
 import Nav from './nav.vue'
 
@@ -13,8 +13,8 @@ import './style.css'
 Vue.use(VueRouter);
 
 const routes = [
-    {title: '排行榜', name: 'chart-bar', path: '/', component: Main},
-    {title: '趋势', name: 'chart-line', path: '/trend', component: Main},
+    {title: '排行榜', name: 'chart-bar', path: '/', component: Rank},
+    {title: '趋势', name: 'chart-line', path: '/trend', component: Rank},
     {title: '登录', name: 'user', path: '/login', component: Login},
 ];
 
