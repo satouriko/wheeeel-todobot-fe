@@ -8,6 +8,7 @@ import config from './config'
 import Rank from './rank.vue'
 import Login from './login.vue'
 import Nav from './nav.vue'
+import Phrases from './phrases.vue'
 
 import './style.css'
 Vue.use(VueRouter);
@@ -17,6 +18,7 @@ const routes = [
     {title: '趋势', name: 'chart-line', path: '/trend', component: Rank},
     {title: '频率', name: 'chart-pie', path: '/pulse', component: Rank},
     {title: '登录', name: 'user', path: '/login', component: Login},
+    {title: '自定义提示语', name: 'boxes', path: '/phrase', component: Phrases},
 ];
 
 const router = new VueRouter({

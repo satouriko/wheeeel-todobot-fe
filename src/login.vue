@@ -1,5 +1,5 @@
 <template>
-    <div class="flex-container">
+    <div class="flex-x-container">
         <h1>用户登录</h1>
         <div id="msg-success" class="alert alert-success" style="display: none;">
             <h4><i class="icon fa fa-check"></i> 登录成功，欢迎回来</h4>
@@ -59,25 +59,6 @@
         margin: 10px 0;
     }
 
-    .alert {
-        border-radius: 0;
-        border: 0;
-        box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2);
-    }
-
-    .alert-success {
-        background-color: #80cbc4 ;
-    }
-
-    .alert-warning {
-        color: #fff59d;
-        background-color: #e65100;
-    }
-
-    .alert-danger {
-        color: #fff59d;
-        background-color: #ff5722;
-    }
 </style>
 
 <script>

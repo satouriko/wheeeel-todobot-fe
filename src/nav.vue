@@ -2,7 +2,7 @@
     <div>
         <div :class="`background bg ${$route.name}`"></div>
         <ul>
-            <li v-for="route in routes" v-if="route.name">
+            <li v-for="route in routes" :style="displayStyle(route.name)">
                 <a :class="route.name" href="javascript:;" :title="route.title" @click="$router.push(route.path)">
                     <i :class="`fa fa-${route.name}`"></i>
                 </a>
@@ -21,7 +21,28 @@
 <script>
 
     export default {
-        props: ['routes'],
+        props: [
+            'routes',
+            'auth'
+        ],
+        methods: {
+            displayStyle(name) {
+                if (this.display(name))
+                    return 'display: block';
+                else
+                    return 'display: none !important';
+            },
+            display(name) {
+                switch (name) {
+                    case 'user':
+                        return !this.auth.isLogin;
+                    case 'boxes':
+                        return this.auth.isLogin;
+                    default:
+                        return !!name;
+                }
+            }
+        }
     }
 </script>
 
@@ -39,7 +60,7 @@
         color: #c668c6 !important;
     }
 
-    .user:hover {
+    .user:hover,.boxes:hover {
         color: #b8ff1e !important;
     }
 
@@ -55,7 +76,7 @@
         background: url("img/bg2.jpg");
     }
 
-    .bg.user {
+    .bg.user,.bg.boxes {
         background: url("img/bg3.jpg");
     }
 
