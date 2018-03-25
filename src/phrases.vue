@@ -41,13 +41,19 @@
             isLogin() {
                 return this.auth.isLogin
             },
+            isReady() {
+                return this.auth.isReady
+            }
         },
         mounted() {
-            if (!this.isLogin) this.$router.push({path: "/login"});
+            if (this.isReady && !this.isLogin) this.$router.push({path: "/login"});
             this.getData();
         },
         watch: {
             isLogin() {
+                if (!this.isLogin) this.$router.push({path: "/login"});
+            },
+            isReady() {
                 if (!this.isLogin) this.$router.push({path: "/login"});
             }
         },

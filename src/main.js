@@ -61,7 +61,6 @@ new Vue({
                 }
             })
                 .then(res => {
-                    this.auth.token = res.headers.get("X-Auth-Token");
                     res.json().then(
                         res => {
                             if (res.code === HttpStatus.OK) {
