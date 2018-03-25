@@ -225,7 +225,7 @@
             onLogin() {
                 $("#msg-success").hide(10).show(100);
                 setTimeout(() => {
-                    this.$router.push({path: "/"});
+                    if(!this._isBeingDestroyed) this.$router.push({path: "/"});
                 }, 3000);
             },
             onLogout() {

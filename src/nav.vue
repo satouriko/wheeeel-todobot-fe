@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div :class="`bg ${$route.name}`"></div>
+        <div :class="`background bg ${$route.name}`"></div>
         <ul>
             <li v-for="route in routes" v-if="route.name">
                 <a :class="route.name" href="javascript:;" :title="route.title" @click="$router.push(route.path)">
@@ -8,6 +8,12 @@
                 </a>
             </li>
         </ul>
+        <!--Preloader-->
+        <div>
+            <div class="bg chart-bar"></div>
+            <div class="bg chart-line"></div>
+            <div class="bg user"></div>
+        </div>
     </div>
 </template>
 
@@ -44,7 +50,7 @@
         background: url("img/bg3.jpg");
     }
 
-    .bg {
+    .background {
         -webkit-background-size: cover;
         background-size: cover;
         -webkit-filter: blur(5px);
