@@ -7,13 +7,15 @@ import config from './config'
 
 import Main from './main.vue'
 import Login from './login.vue'
+import Nav from './nav.vue'
 
 import './style.css'
 Vue.use(VueRouter);
 
 const routes = [
-    {path: '/', component: Main},
-    {path: '/login', component: Login},
+    {title: '排行榜', name: 'chart-bar', path: '/', component: Main},
+    {title: '趋势', name: 'chart-line', path: '/trend', component: Main},
+    {title: '登录', name: 'user', path: '/login', component: Login},
 ];
 
 const router = new VueRouter({
@@ -75,5 +77,8 @@ new Vue({
         updateAuthStatus(auth) {
             this.auth = auth;
         },
+    },
+    components: {
+        'nav-section': Nav
     }
 });

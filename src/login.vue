@@ -1,6 +1,6 @@
 <template>
     <!-- Main content -->
-    <div>
+    <div class="container">
         <div class="row">
             <!-- left column -->
             <h2>用户登录</h2>
@@ -110,7 +110,7 @@
             onLogin() {
                 $("#msg-success").hide(10).show(100);
                 setTimeout(() => {
-                    location.href = '/';
+                    this.$router.push({path: "/"});
                 }, 3000);
             },
             onLogout() {
