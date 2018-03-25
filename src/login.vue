@@ -84,6 +84,18 @@
                 return this.auth.isReady
             }
         },
+        mounted() {
+            if(this.isReady) {
+                if(this.isLogin) {
+                    this.onLogin()
+                } else if(typeof this.$route.query.cred !== 'undefined') {
+                    this.credLogin(this.$route.query.cred)
+                } else {
+                    this.otp = true;
+                    this.initOtp();
+                }
+            }
+        },
         beforeDestroy() {
             clearInterval(this.otpLoop);
         },
