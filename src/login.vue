@@ -218,7 +218,8 @@
                                     let auth = {
                                         isLogin: true,
                                         token: token,
-                                        user: res.data
+                                        user: res.data,
+                                        isReady: true,
                                     };
                                     this.$emit('update-auth', auth);
                                 } else {
