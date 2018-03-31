@@ -1,13 +1,30 @@
 <template>
-    <div class="content-container">
+    <div id="content-container" class="content-container">
         <div class="flex-y-container">
             <h1>自定义提示语</h1>
+            <div id="msg-warning" class="alert alert-warning" style="display: none;">
+                <h4><i class="icon fa fa-exclamation"></i> 操作失败</h4>
 
-            <textarea v-if="editing" class="form-control" @input="resizeTextarea"></textarea>
+                <p id="msg-warning-p">
+                    {{ warning }}
+                </p>
+            </div>
+            <div id="msg-error" class="alert alert-danger" style="display: none;">
+                <h4><i class="icon fa fa-exclamation-triangle"></i> 发生错误</h4>
+
+                <p id="msg-error-p">
+                    {{ error }}
+                </p>
+            </div>
             <ul>
-                <li v-for="d in data">{{ d.phrase }}</li>
-                <li v-if="!editing"><a href="javascript:;" @click="edit"><i class="fa fa-pencil-alt"></i> 编辑</a> </li>
-                <li v-else><a href="javascript:;" @click="update"><i class="fa fa-save"></i> 保存</a> </li>
+                <li v-for="(d, i) in data">
+                    {{ d.phrase }}
+                    <span class="right-icon"><a href="javascript:;" @click="trash(d.uuid, i)"><i class="fa fa-trash-alt"></i></a></span>
+                </li>
+                <li>
+                    <input @focus="scrollTop" v-model="newPhrase" />
+                    <span class="right-icon"><a href="javascript:;" @click="save"><i class="fa fa-save"></i></a></span>
+                </li>
             </ul>
             <form>
 
@@ -29,9 +46,9 @@
             return {
                 error: "",
                 warning: "",
-                jsonData: "",
                 data: [],
-                editing: false
+                newPhrase: "",
+                innerHeight: window.innerHeight
             }
         },
         computed: {
@@ -43,11 +60,12 @@
             },
             isReady() {
                 return this.auth.isReady
-            }
+            },
         },
         mounted() {
             if (this.isReady && !this.isLogin) this.$router.push({path: "/login"});
-            this.getData();
+            else if (this.isReady) this.getData();
+            window.onresize = this.scrollTop;
         },
         watch: {
             isLogin() {
@@ -55,14 +73,23 @@
             },
             isReady() {
                 if (!this.isLogin) this.$router.push({path: "/login"});
+                else this.getData();
             }
         },
         methods: {
-            edit() {
-                this.editing = true;
+            scrollTop() {
+                const e = document.getElementById('content-container');
+                e.scrollTop = e.scrollHeight;
             },
-            update() {
-                this.editing = false;
+            showWarning(msg) {
+                this.warning = msg;
+                $("#msg-error").hide(10);
+                $("#msg-warning").hide(10).show(100);
+            },
+            showError(msg) {
+                this.error = msg;
+                $("#msg-warning").hide(10);
+                $("#msg-error").show(100);
             },
             getData() {
                 fetch(config.urlBase + '/phrases', {
@@ -76,7 +103,6 @@
                             res => {
                                 if (res.code === HttpStatus.OK) {
                                     this.data = res.data;
-                                    this.jsonData = JSON.stringify(res.data);
                                 } else {
                                     switch (res.code) {
                                         case HttpStatus.UNAUTHORIZED:
@@ -95,36 +121,81 @@
                         this.showError(`网络错误：${error}`);
                     });
             },
-            resizeTextarea(e) {
-                const minRows = 5;
-                // 最大高度，超过则出现滚动条
-                const maxRows = Infinity;
-                let t = e.target;
-                if (t.scrollTop === 0) t.scrollTop=1;
-                while (t.scrollTop === 0){
-                    if (t.rows > minRows)
-                        t.rows--;
-                    else
-                        break;
-                    t.scrollTop = 1;
-                    if (t.rows < maxRows)
-                        t.style.overflowY = "hidden";
-                    if (t.scrollTop > 0){
-                        t.rows++;
-                        break;
-                    }
+            trash(uuid, index) {
+                if (confirm("确定要删除吗？")) {
+                    this.remove(uuid, index);
                 }
-                while(t.scrollTop > 0){
-                    if (t.rows < maxRows){
-                        t.rows++;
-                        if (t.scrollTop === 0) t.scrollTop=1;
-                    }
-                    else{
-                        t.style.overflowY = "auto";
-                        break;
-                    }
-                }
-            }
+            },
+            remove(uuid, index) {
+                fetch(config.urlBase + `/phrases/${uuid}/delete`, {
+                    method: "DELETE",
+                    headers: {
+                        'X-Auth-Token': this.auth.token
+                    },
+                })
+                    .then(res => {
+                        res.json().then(
+                            res => {
+                                if (res.code === HttpStatus.OK) {
+                                    this.data.splice(index, 1);
+                                } else {
+                                    switch (res.code) {
+                                        case HttpStatus.UNAUTHORIZED:
+                                            this.$emit('check-auth');
+                                            break;
+                                        default:
+                                            this.showWarning(`发生错误：${res.message}`);
+                                    }
+                                }
+                            }
+                        ).catch(error => {
+                            this.showError(`网络错误：${error}`);
+                        });
+                    })
+                    .catch(error => {
+                        this.showError(`网络错误：${error}`);
+                    });
+            },
+            save() {
+                fetch(config.urlBase + '/phrases/create', {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Auth-Token': this.auth.token
+                    },
+                    body: this.newPhrase.trim()
+                })
+                    .then(res => {
+                        res.json().then(
+                            res => {
+                                if (res.code === HttpStatus.OK) {
+                                    this.data.push({uuid: res.data, phrase: this.newPhrase});
+                                    this.newPhrase = "";
+                                    $("#msg-error").hide(10);
+                                    $("#msg-warning").hide(10);
+                                } else {
+                                    switch (res.code) {
+                                        case HttpStatus.UNAUTHORIZED:
+                                            this.$emit('check-auth');
+                                            break;
+                                        case HttpStatus.BAD_REQUEST:
+                                            if (res.message === "the phrase should not be empty") {
+                                                this.showWarning(`请填写提示语哦～`);
+                                                break;
+                                            }
+                                        default:
+                                            this.showWarning(`发生错误：${res.message}`);
+                                    }
+                                }
+                            }
+                        ).catch(error => {
+                            this.showError(`网络错误：${error}`);
+                        });
+                    })
+                    .catch(error => {
+                        this.showError(`网络错误：${error}`);
+                    });
+            },
         }
     }
 </script>
@@ -141,20 +212,49 @@
         padding: 0;
         max-width: 75%;
     }
+    @media screen and (max-width: 760px) {
+        ul {
+            max-width: 90%;
+        }
+    }
     li {
+        position: relative;
         background-color: #fff;
-        margin: 10px 0px;
-        font-size: 20px;
-        padding: 0 1em;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        font-size: 15px;
+        line-height: 19px;
+        padding: 0.25em 1em;
         color: #6a737d;
         border-left: 0.25em solid #ffaa7f;
         text-align: left;
         word-break: break-all;
+        margin-right: 40px;
     }
-    textarea {
-        max-width: 75%;
-        border-radius: 0;
-        overflow: hidden;
+    li span.right-icon {
+        position: absolute;
+        padding: 0 0.75em;
+        left: calc(100% + 10px);
+        display: block;
+        top: 0;
+        height: 100%;
+        color: #6a737d;
+        background-color: #fff;
+        white-space: nowrap;
+        line-height: 100%;
+        text-align: center;
+    }
+    li span.right-icon a {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        transform: translate(0, -50%);
+    }
+    li input {
+        width: 100%;
+        line-height: calc(100% - 0.5rem);
+        margin: 0.25rem 0;
     }
     a {
         font-size: 16px;
